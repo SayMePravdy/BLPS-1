@@ -1,12 +1,15 @@
 package itmo.blps.mommy.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "purchases")
 @Data
+@TypeDef(name = "purchase_status", typeClass = PurchaseStatusEnumType.class)
 public class Purchase {
 
     @Id
@@ -25,6 +28,7 @@ public class Purchase {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Type(type = "purchase_status")
     private PurchaseStatus purchaseStatus;
 
     public Purchase(Integer minCount, Integer curCount, Product product, PurchaseStatus purchaseStatus) {
