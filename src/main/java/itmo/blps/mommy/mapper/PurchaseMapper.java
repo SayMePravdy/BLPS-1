@@ -20,15 +20,13 @@ public class PurchaseMapper {
     private ProductMapper productMapper;
 
     public Purchase fromDto(PurchaseRequestDTO purchaseRequestDTO) {
-        Product product = productService.getProduct(purchaseRequestDTO.getProductId());
-        if (product == null) {
-            throw new EntityNotFoundException("Unknown product: " + purchaseRequestDTO.getProductId());
-        }
+        Product product = productService.findProduct(purchaseRequestDTO.getProductId());
         return new Purchase(
                 purchaseRequestDTO.getMinCount(),
                 0,
                 product,
-                PurchaseStatus.CREATED
+                PurchaseStatus.CREATED,
+                false
         );
     }
 
@@ -38,7 +36,8 @@ public class PurchaseMapper {
                 purchase.getMinCount(),
                 purchase.getCurCount(),
                 purchase.getPurchaseStatus(),
-                productMapper.toDto(purchase.getProduct())
+                productMapper.toDto(purchase.getProduct()),
+                purchase.getIsDelited()
         );
     }
 

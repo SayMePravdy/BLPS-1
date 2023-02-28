@@ -7,17 +7,17 @@ create table roles
 create table users
 (
     id       serial primary key,
-    email    text,
+    email    text            not null,
     password text,
     role_id  integer
         constraint users_roles_id_fk
-            references roles
+            references roles not null
 );
 
 create table products
 (
     id            serial primary key,
-    name          text,
+    name          text not null,
     weight        float,
     consumer_info text
 );
@@ -26,17 +26,18 @@ create type purchase_status as enum (
     'CREATED',
     'WAIT_PAYMENT',
     'PAID'
-    );
+);
 
 create table purchases
 (
     id         serial primary key,
-    min_count  integer,
-    cur_count  integer default 0,
+    min_count  integer               not null,
+    cur_count  integer default 0     not null, ,
     status     purchase_status,
     product_id integer
         constraint purchases_products_id_fk
-            references products
+            references products,
+    is_deleted bool    default false not null
 );
 
 create table favourites
@@ -54,11 +55,11 @@ create table orders
 (
     purchase_id integer
         constraint orders_purchases_id_fk
-            references purchases,
-    count       integer,
+            references purchases not null,
+    count       integer          not null,
     user_id     integer
         constraint orders_users_id_fk
-            references users,
+            references users     not null,
     primary key (purchase_id, user_id)
 );
 

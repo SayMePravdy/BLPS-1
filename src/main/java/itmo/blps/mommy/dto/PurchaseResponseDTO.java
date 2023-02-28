@@ -18,4 +18,6 @@ public class PurchaseResponseDTO {
 
     private ProductDTO product;
 
+    private Boolean isDeleted;
+
 }

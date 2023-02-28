@@ -1,6 +1,5 @@
-package itmo.blps.mommy.exception.handler;
+package itmo.blps.mommy.exception;
 
-import itmo.blps.mommy.exception.AuthException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,11 +7,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class AuthExceptionHandler extends ResponseEntityExceptionHandler {
+public class ProcessExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(AuthException.class)
-    public ResponseEntity<?> handleMaxSizeException(AuthException e) {
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<?> handleMaxSizeException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
+
 }

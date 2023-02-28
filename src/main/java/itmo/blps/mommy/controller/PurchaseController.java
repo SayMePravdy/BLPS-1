@@ -12,11 +12,11 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @GetMapping("/user/purchases")
+    @GetMapping("/purchases")
     public ResponseEntity<?> getPurchases(
-            @RequestParam("name") String name,
-            @RequestParam("page") Integer page,
-            @RequestParam("per_page") Integer perPage
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "per_page", required = false, defaultValue = "20") Integer perPage
     ) {
         return ResponseEntity.ok(purchaseService.suggestPurchases(name, page, perPage));
     }
@@ -24,6 +24,17 @@ public class PurchaseController {
     @PostMapping("/admin/purchase/create")
     public ResponseEntity<?> createPurchase(@RequestBody PurchaseRequestDTO purchaseRequestDTO) {
         return ResponseEntity.ok(purchaseService.createPurchase(purchaseRequestDTO));
+    }
+
+    @DeleteMapping("/admin/purchase/{id}")
+    public ResponseEntity<?> deletePurchase(@PathVariable int id) {
+        purchaseService.deletePurchase(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/purchase/{id}")
+    public ResponseEntity<?> getPurchase(@PathVariable int id) {
+        return ResponseEntity.ok(purchaseService.getPurchase(id));
     }
 
 }
