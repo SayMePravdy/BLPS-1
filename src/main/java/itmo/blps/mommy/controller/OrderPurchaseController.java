@@ -3,8 +3,8 @@ package itmo.blps.mommy.controller;
 import itmo.blps.mommy.dto.OrderPurchaseDto;
 import itmo.blps.mommy.entity.UserPurchase;
 import itmo.blps.mommy.service.OrderPurchaseService;
+import itmo.blps.mommy.service.UserService;
 import itmo.blps.mommy.validator.ValidProduct;
-import itmo.blps.mommy.validator.ValidUser;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,23 +23,20 @@ public class OrderPurchaseController {
         return ResponseEntity.ok(orderPurchaseService.addOrderPurchase(orderPurchaseDto));
     }
 
-    @GetMapping("/{userId}/purchases/{purchaseId}")
-    public ResponseEntity<OrderPurchaseDto> getOrderPurchase(@PathVariable(name = "userId") @Valid @ValidUser Integer userId,
-                                                             @PathVariable(name = "purchaseId") @Valid @ValidProduct Integer purchaseId) {
-        return ResponseEntity.ok(orderPurchaseService.getOrderPurchase(userId, purchaseId));
+    @GetMapping("/purchases/{purchaseId}")
+    public ResponseEntity<OrderPurchaseDto> getOrderPurchase(@PathVariable(name = "purchaseId") @Valid @ValidProduct Integer purchaseId) {
+        return ResponseEntity.ok(orderPurchaseService.getOrderPurchase(purchaseId));
     }
 
 
-    @DeleteMapping("/{userId}/purchases/{purchaseId}")
-    public ResponseEntity<OrderPurchaseDto> deleteOrderPurchase(@PathVariable(name = "userId") @Valid @ValidUser Integer userId,
-                                                                @PathVariable(name = "purchaseId") @Valid @ValidProduct Integer purchaseId) {
-        return ResponseEntity.ok(orderPurchaseService.deleteOrderPurchase(userId, purchaseId));
+    @DeleteMapping("/purchases/{purchaseId}")
+    public ResponseEntity<OrderPurchaseDto> deleteOrderPurchase(@PathVariable(name = "purchaseId") @Valid @ValidProduct Integer purchaseId) {
+        return ResponseEntity.ok(orderPurchaseService.deleteOrderPurchase(purchaseId));
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<UserPurchase>> getPagedOrderPurchase(@PathVariable(name = "userId") @Valid @ValidUser Integer userId,
-                                                                    @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+    @GetMapping
+    public ResponseEntity<List<UserPurchase>> getPagedOrderPurchase(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                     @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return ResponseEntity.ok(orderPurchaseService.getPagedOrderPurchase(userId, page, pageSize).getContent());
+        return ResponseEntity.ok(orderPurchaseService.getPagedOrderPurchase(page, pageSize).getContent());
     }
 }
