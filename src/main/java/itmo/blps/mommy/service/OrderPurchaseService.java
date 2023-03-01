@@ -20,7 +20,7 @@ public class OrderPurchaseService {
     private PurchaseCountService purchaseCountService;
 
 
-    public OrderPurchaseDto addOrderPurchase(OrderPurchaseDto orderPurchaseDto) {
+    public OrderPurchaseDto addOrderPurchase(OrderPurchaseDto orderPurchaseDto) throws Exception {
         UserPurchase userPurchase = new UserPurchase(orderPurchaseDto.getUserId(), orderPurchaseDto.getPurchaseId());
         userPurchase.setDateCreated(Instant.now());
         userPurchase.setProductsCount(orderPurchaseDto.getCountOfProducts());

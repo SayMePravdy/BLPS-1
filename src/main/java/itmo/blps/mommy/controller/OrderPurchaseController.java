@@ -19,7 +19,7 @@ public class OrderPurchaseController {
     private final OrderPurchaseService orderPurchaseService;
 
     @PostMapping("/create")
-    public ResponseEntity<OrderPurchaseDto> addOrderPurchase(@RequestBody @Valid OrderPurchaseDto orderPurchaseDto) {
+    public ResponseEntity<OrderPurchaseDto> addOrderPurchase(@RequestBody @Valid OrderPurchaseDto orderPurchaseDto) throws Exception {
         return ResponseEntity.ok(orderPurchaseService.addOrderPurchase(orderPurchaseDto));
     }
 

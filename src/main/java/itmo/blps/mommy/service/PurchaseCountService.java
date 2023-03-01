@@ -21,8 +21,9 @@ public class PurchaseCountService {
     private final UserPurchaseRepository userPurchaseRepository;
     private final EmailService emailService;
 
-    public void countPurchasedProducts(UserPurchase db) {
-        Purchase purchase = purchaseRepository.getById(db.getId().getPurchaseId());
+    public void countPurchasedProducts(UserPurchase db) throws Exception {
+        Purchase purchase = purchaseRepository.findById(db.getId().getPurchaseId()).orElseThrow(() -> new Exception("Выкупа с существующим айди не найдено"));
+
         purchase.setCurCount(purchase.getCurCount() + db.getProductsCount());
 
         if (purchase.getCurCount() >= purchase.getMinCount()) {
