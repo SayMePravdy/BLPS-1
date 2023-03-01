@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserPurchasedRepository extends JpaRepository<UserPurchase, Integer> {
+public interface UserPurchaseRepository extends JpaRepository<UserPurchase, Integer> {
     Optional<UserPurchase> findById_UserIdAndId_PurchaseId(Integer userId, Integer purchaseId);
 
     Optional<UserPurchase> deleteById_UserIdAndId_PurchaseId(Integer userId, Integer purchaseId);
