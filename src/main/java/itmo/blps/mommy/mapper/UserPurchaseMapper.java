@@ -1,7 +1,6 @@
 package itmo.blps.mommy.mapper;
 
 import itmo.blps.mommy.dto.OrderPurchaseDto;
-import itmo.blps.mommy.dto.UserFavoriteDto;
 import itmo.blps.mommy.entity.UserPurchase;
 import org.springframework.stereotype.Component;
 
