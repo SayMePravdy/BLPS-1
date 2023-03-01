@@ -63,6 +63,23 @@ create table orders
     primary key (purchase_id, user_id)
 );
 
+create table user_purchase
+(
+    user_id       int references users (id),
+    purchaseId    int references purchases (id),
+    dateCreated   timestamp,
+    productsCount int,
+    primary key (user_id, product_id);
+);
+
+create table user_favorite_products
+(
+    user_id     int references users (id),
+    product_id  int references products (id),
+    dateCreated timestamp,
+    primary key (user_id, product_id);
+);
+
 insert into roles (id, name)
 VALUES (1, 'ROLE_USER'),
        (2, 'ROLE_ADMIN');
