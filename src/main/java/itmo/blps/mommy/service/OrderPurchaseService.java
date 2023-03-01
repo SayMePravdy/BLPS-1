@@ -23,6 +23,7 @@ public class OrderPurchaseService {
     public OrderPurchaseDto addOrderPurchase(OrderPurchaseDto orderPurchaseDto) {
         UserPurchase userPurchase = new UserPurchase(orderPurchaseDto.getUserId(), orderPurchaseDto.getPurchaseId());
         userPurchase.setDateCreated(Instant.now());
+        userPurchase.setProductsCount(orderPurchaseDto.getCountOfProducts());
         UserPurchase db = userPurchaseRepository.save(userPurchase);
         purchaseCountService.countPurchasedProducts(db);
         return userPurchaseMapper.toDto(db);
