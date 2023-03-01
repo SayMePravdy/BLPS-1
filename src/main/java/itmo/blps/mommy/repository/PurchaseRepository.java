@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
 
@@ -30,4 +31,5 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
     @Query(value = "update purchases set is_deleted = true where id = :id", nativeQuery = true)
     int deletePurchase(@Param("id") int id);
 
+    Optional<Purchase> findById(Integer id);
 }

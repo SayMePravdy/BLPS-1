@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -22,6 +23,7 @@ public class UserFavoriteProduct {
     private UserProductKey id;
 
     @CreatedDate
+    @Column(name = "date_created")
     private Instant dateCreated;
 
     public UserFavoriteProduct(Integer userId, Integer productId) {
