@@ -12,6 +12,5 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class UserFavoriteDto {
-    private Integer userId;
     private Integer productId;
 }

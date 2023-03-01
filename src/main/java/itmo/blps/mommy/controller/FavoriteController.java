@@ -17,11 +17,6 @@ import java.util.List;
 public class FavoriteController {
     private FavoriteProductService favoriteProductService;
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<UserFavoriteDto> getFavoriteProduct(@PathVariable(name = "productId") @Valid @ValidProduct Integer productId) {
-        return ResponseEntity.ok(favoriteProductService.getFavoriteProduct(productId));
-    }
-
     @PostMapping("/{productId}")
     public ResponseEntity<UserFavoriteDto> addFavoriteProduct(@PathVariable(name = "productId") @Valid @ValidProduct Integer productId) {
         return ResponseEntity.ok(favoriteProductService.addFavoriteProduct(productId));

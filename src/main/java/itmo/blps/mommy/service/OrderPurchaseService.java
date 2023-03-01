@@ -24,7 +24,9 @@ public class OrderPurchaseService {
 
 
     public OrderPurchaseDto addOrderPurchase(OrderPurchaseDto orderPurchaseDto) throws Exception {
-        UserPurchase userPurchase = new UserPurchase(orderPurchaseDto.getUserId(), orderPurchaseDto.getPurchaseId());
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByEmail(userName);
+        UserPurchase userPurchase = new UserPurchase(user.getId(), orderPurchaseDto.getPurchaseId());
         userPurchase.setDateCreated(Instant.now());
         userPurchase.setProductsCount(orderPurchaseDto.getCountOfProducts());
         UserPurchase db = userPurchaseRepository.save(userPurchase);

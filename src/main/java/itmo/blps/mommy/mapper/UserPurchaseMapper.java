@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class UserPurchaseMapper {
     public OrderPurchaseDto toDto(UserPurchase userPurchase) {
         return new OrderPurchaseDto()
-                .setUserId(userPurchase.getId().getUserId())
                 .setPurchaseId(userPurchase.getId().getPurchaseId())
                 .setCountOfProducts(userPurchase.getProductsCount());
     }

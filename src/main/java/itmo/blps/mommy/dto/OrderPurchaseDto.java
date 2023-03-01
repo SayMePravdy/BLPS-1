@@ -16,8 +16,6 @@ import javax.validation.constraints.Min;
 @Accessors(chain = true)
 public class OrderPurchaseDto {
     @NotNull
-    private Integer userId;
-    @NotNull
     private Integer purchaseId;
     @NotNull
     @Min(1)

@@ -12,7 +12,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/admin/products")
+    @GetMapping("/products")
     public ResponseEntity<?> getProducts(
             @RequestParam(value = "name", required = false, defaultValue = "") String name,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
@@ -26,7 +26,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.createProduct(productDTO));
     }
 
-    @GetMapping("/admin/product/{id}")
+    @GetMapping("/product/{id}")
     public ResponseEntity<?> getProduct(@PathVariable int id) {
         return ResponseEntity.ok(productService.getProduct(id));
     }
