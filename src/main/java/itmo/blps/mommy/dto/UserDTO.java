@@ -1,5 +1,7 @@
 package itmo.blps.mommy.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -7,13 +9,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Data
+@AllArgsConstructor
 public class UserDTO {
-    @NonNull
-    @Email(message = "Невалидный mail")
-    @NotEmpty(message = "Mail не может быть пустым!")
-    private String email;
 
     @NonNull
-    @NotEmpty(message = "Password не должен быть пустым!")
+    @JsonProperty(value = "email", required = true)
+    private String email;
+
+
+    @JsonProperty(value = "password", required = true)
     private String password;
 }

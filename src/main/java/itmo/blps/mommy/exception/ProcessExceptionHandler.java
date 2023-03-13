@@ -1,10 +1,12 @@
 package itmo.blps.mommy.exception;
 
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import itmo.blps.mommy.controller.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -18,11 +20,19 @@ import java.util.stream.Collectors;
 @ControllerAdvice(assignableTypes = {AuthController.class, FavoriteController.class, OrderPurchaseController.class,
         ProductController.class, PurchaseController.class})
 public class ProcessExceptionHandler {
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<?> handleException(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<?> handleException(HttpMessageNotReadableException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Invalid body");
+    }
+
 
     @ExceptionHandler({ConstraintViolationException.class, BindException.class, MethodArgumentNotValidException.class,
             MissingServletRequestParameterException.class, IllegalArgumentException.class})

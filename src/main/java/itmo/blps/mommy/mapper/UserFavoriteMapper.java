@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class UserFavoriteMapper {
     public UserFavoriteDto toDto(UserFavoriteProduct userFavoriteProduct) {
         return new UserFavoriteDto()
-                .setUserId(userFavoriteProduct.getId().getUserId())
                 .setProductId(userFavoriteProduct.getId().getProductId());
     }
 }

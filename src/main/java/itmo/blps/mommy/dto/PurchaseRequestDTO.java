@@ -9,6 +9,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class PurchaseRequestDTO {
 
+    @NonNull
     @JsonProperty(namespace = "minCount", required = true)
     private Integer minCount;
 
