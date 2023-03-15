@@ -3,7 +3,6 @@ package itmo.blps.mommy.controller;
 import itmo.blps.mommy.dto.OrderPurchaseDto;
 import itmo.blps.mommy.entity.UserPurchase;
 import itmo.blps.mommy.service.OrderPurchaseService;
-import itmo.blps.mommy.service.UserService;
 import itmo.blps.mommy.validator.ValidProduct;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +29,9 @@ public class OrderPurchaseController {
 
 
     @DeleteMapping("/purchases/{purchaseId}")
-    public ResponseEntity<OrderPurchaseDto> deleteOrderPurchase(@PathVariable(name = "purchaseId") @Valid @ValidProduct Integer purchaseId) {
-        return ResponseEntity.ok(orderPurchaseService.deleteOrderPurchase(purchaseId));
+    public ResponseEntity<?> deleteOrderPurchase(@PathVariable(name = "purchaseId") @Valid @ValidProduct Integer purchaseId) {
+        orderPurchaseService.deleteOrderPurchase(purchaseId);
+        return ResponseEntity.ok("Сущность выкупа успешно удалена!");
     }
 
     @GetMapping

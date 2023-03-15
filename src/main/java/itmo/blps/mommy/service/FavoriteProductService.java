@@ -5,6 +5,7 @@ import itmo.blps.mommy.entity.User;
 import itmo.blps.mommy.entity.UserFavoriteProduct;
 import itmo.blps.mommy.exception.EntityNotFoundException;
 import itmo.blps.mommy.mapper.UserFavoriteMapper;
+import itmo.blps.mommy.repository.ProductRepository;
 import itmo.blps.mommy.repository.UserFavoriteProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,8 +21,10 @@ public class FavoriteProductService {
     private UserFavoriteProductRepository userFavoriteProductRepository;
     private UserFavoriteMapper userFavoriteMapper;
     private UserService userService;
+    private ProductRepository productRepository;
 
     public UserFavoriteDto addFavoriteProduct(Integer productId) {
+        productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Сущность продукта не найдена"));
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(userName);
         UserFavoriteProduct userFavoriteProduct = new UserFavoriteProduct(user.getId(), productId);
@@ -36,11 +39,14 @@ public class FavoriteProductService {
                 .orElseThrow(() -> new EntityNotFoundException("Сущность избранной покупки не найдена")));
     }
 
-    public UserFavoriteDto deleteFavoriteProduct(Integer productId) {
+    public void deleteFavoriteProduct(Integer productId) {
+        productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Сущность продукта не найдена"));
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(userName);
-        return userFavoriteMapper.toDto(userFavoriteProductRepository.deleteById_UserIdAndId_ProductId(user.getId(), productId)
-                .orElseThrow(() -> new EntityNotFoundException("Сущность избранной покупки не найдена")));
+        userFavoriteProductRepository.findById_UserIdAndId_ProductId(user.getId(), productId)
+                .orElseThrow(() -> new EntityNotFoundException("В избранном не найдено такого продукта"));
+        userFavoriteProductRepository.deleteById_UserIdAndId_ProductId(user.getId(), productId)
+                .orElseThrow(() -> new EntityNotFoundException("Сущность избранной покупки не найдена"));
     }
 
     public Page<UserFavoriteProduct> getFavoriteProducts(int page, int pageSize) {

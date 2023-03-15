@@ -23,8 +23,9 @@ public class FavoriteController {
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<UserFavoriteDto> deleteFavoriteProduct(@PathVariable(name = "productId") @Valid @ValidProduct Integer productId) {
-        return ResponseEntity.ok(favoriteProductService.deleteFavoriteProduct(productId));
+    public ResponseEntity<?> deleteFavoriteProduct(@PathVariable(name = "productId") @Valid @ValidProduct Integer productId) {
+        favoriteProductService.deleteFavoriteProduct(productId);
+        return ResponseEntity.ok().body("Успешно удален товар из избранного!");
     }
 
     @GetMapping
