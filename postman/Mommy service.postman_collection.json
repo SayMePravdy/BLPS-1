@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "813fa653-5524-4d69-9496-f1a1dbb53b6b",
+		"name": "Mommy service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"tesst150@mail.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9087/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@mail.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9087/api/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_header}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"test_b9a7a8847c1c\",\r\n  \"weight\": 72.10,\r\n  \"consumerInfo\": \"test_d283e938ee1c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9087/api/admin/product/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"admin",
+						"product",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update product",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiZXhwIjoxNjgwMTIzNjAwfQ.os9ztP3v_N_XsNzLyJ9goYwzbWdY-j1hTLZIG1CaTQjtslJB3orbK2-JIOXKyS5TOm-wlKDMLvAiEDV3zb66qw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"asb\",\r\n    \"weight\": 4,\r\n    \"consumerInfo\": \"inf\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9087/api/admin/product/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"admin",
+						"product",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_header}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9087/api/product/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"product",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Purchase",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_header}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"minCount\": \"10\",\r\n    \"productId\" : \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9087/api/admin/purchase/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"admin",
+						"purchase",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suggest purchases",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_header}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9087/api/purchases?name=s&limit=10&offset=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"purchases"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "s"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Purchase",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9087/api/purchase/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"purchase",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete purchase",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_header}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9087/api/admin/purchase/11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9087",
+					"path": [
+						"api",
+						"admin",
+						"purchase",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "auth_header",
+			"value": "eyJzdWIiOiJ0ZXN0MTBAbWFpbC5jb20iLCJleHAiOjE2Nzk5NTA4MDB9"
+		}
+	]
+}
