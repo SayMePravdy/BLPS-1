@@ -11,23 +11,57 @@
     <groupId>itmo.blps</groupId>
     <artifactId>mommy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>mommy</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
+        <deploy.wildfly.host>127.0.0.1</deploy.wildfly.host>
+        <deploy.wildfly.port>9990</deploy.wildfly.port>
+        <deploy.wildfly.username>saymepravdy</deploy.wildfly.username>
+        <deploy.wildfly.password>Aboba2232458!</deploy.wildfly.password>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -49,11 +83,6 @@
             <groupId>io.hypersistence</groupId>
             <artifactId>hypersistence-utils-hibernate-55</artifactId>
             <version>3.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -112,6 +141,26 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>2.0.2.Final</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filename>${project.build.finalName}.war</filename>
+                    <hostname>${deploy.wildfly.host}</hostname>
+                    <port>${deploy.wildfly.port}</port>
+                    <username>${deploy.wildfly.username}</username>
+                    <password>${deploy.wildfly.password}</password>
                 </configuration>
             </plugin>
         </plugins>
