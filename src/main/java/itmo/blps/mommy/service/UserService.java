@@ -5,26 +5,19 @@ import itmo.blps.mommy.dto.UserDTO;
 import itmo.blps.mommy.entity.User;
 import itmo.blps.mommy.exception.AuthException;
 import itmo.blps.mommy.mapper.UserMapper;
-import itmo.blps.mommy.repository.UserRepository;
+import itmo.blps.mommy.service.database.UserDbService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class UserService {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
+    private UserDbService userDbService;
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private UserMapper userMapper;
-
-    @Autowired
     private JwtProvider jwtProvider;
 
     public String register(UserDTO userDTO) throws AuthException {
@@ -36,7 +29,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userByEmail = findByEmail(user.getEmail());
         if (userByEmail == null) {
-            userRepository.save(user);
+            userDbService.create(user);
         } else {
             throw new AuthException("Email is already in use");
         }
@@ -45,7 +38,7 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userDbService.findByEmail(email);
     }
 
     public String auth(UserDTO user) {

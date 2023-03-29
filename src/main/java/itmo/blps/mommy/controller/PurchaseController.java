@@ -22,18 +22,18 @@ public class PurchaseController {
     }
 
     @PostMapping("/admin/purchase/create")
-    public ResponseEntity<?> createPurchase(@RequestBody PurchaseRequestDTO purchaseRequestDTO) {
+    public ResponseEntity<?> createPurchase(@RequestBody PurchaseRequestDTO purchaseRequestDTO) throws Exception {
         return ResponseEntity.ok(purchaseService.createPurchase(purchaseRequestDTO));
     }
 
     @DeleteMapping("/admin/purchase/{id}")
-    public ResponseEntity<?> deletePurchase(@PathVariable int id) {
+    public ResponseEntity<?> deletePurchase(@PathVariable int id) throws Exception {
         purchaseService.deletePurchase(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/purchase/{id}")
-    public ResponseEntity<?> getPurchase(@PathVariable int id) {
+    public ResponseEntity<?> getPurchase(@PathVariable int id) throws Exception {
         return ResponseEntity.ok(purchaseService.getPurchase(id));
     }
 

@@ -2,36 +2,27 @@ package itmo.blps.mommy.service;
 
 import itmo.blps.mommy.dto.ProductDTO;
 import itmo.blps.mommy.entity.Product;
-import itmo.blps.mommy.exception.EntityNotFoundException;
 import itmo.blps.mommy.mapper.ProductMapper;
-import itmo.blps.mommy.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import itmo.blps.mommy.service.database.ProductDbService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
+    private ProductDbService productDbService;
     private ProductMapper productMapper;
 
-    public Product findProduct(Integer productId) {
-        return productRepository
-                .findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Unknown product: " + productId));
-    }
 
     public ProductDTO getProduct(Integer productId) {
-        return productMapper.toDto(findProduct(productId));
+        return productMapper.toDto(productDbService.findProduct(productId));
     }
 
     public List<ProductDTO> suggestProducts(String name, int page, int perPage) {
-        List<Product> products = productRepository.findProducts(name.strip(), perPage, (page - 1) * perPage);
+        List<Product> products = productDbService.findProducts(name.strip(), perPage, (page - 1) * perPage);
         return products
                 .stream()
                 .map(productMapper::toDto)
@@ -39,7 +30,7 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        Product product = productRepository.save(productMapper.fromDto(productDTO));
+        Product product = productDbService.create(productMapper.fromDto(productDTO));
         return productMapper.toDto(product);
     }
 
@@ -47,10 +38,10 @@ public class ProductService {
         if (productDTO.getId() == null) {
             throw new RuntimeException("Product id should not be null");
         }
-        Product product = findProduct(productDTO.getId());
+        Product product = productDbService.findProduct(productDTO.getId());
         product.setName(productDTO.getName());
         product.setWeight(productDTO.getWeight());
         product.setConsumerInfo(productDTO.getConsumerInfo());
-        return productMapper.toDto(productRepository.save(product));
+        return productMapper.toDto(productDbService.create(product));
     }
 }

@@ -7,7 +7,7 @@ import itmo.blps.mommy.entity.UserPurchase;
 import itmo.blps.mommy.exception.EntityNotFoundException;
 import itmo.blps.mommy.mapper.UserPurchaseMapper;
 import itmo.blps.mommy.repository.PurchaseRepository;
-import itmo.blps.mommy.repository.UserPurchaseRepository;
+import itmo.blps.mommy.service.database.UserPurchaseDbService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ import java.time.Instant;
 @Service
 @AllArgsConstructor
 public class OrderPurchaseService {
-    private UserPurchaseRepository userPurchaseRepository;
+    private UserPurchaseDbService userPurchaseDbService;
     private PurchaseRepository purchaseRepository;
     private UserPurchaseMapper userPurchaseMapper;
     private PurchaseCountService purchaseCountService;
@@ -31,15 +31,14 @@ public class OrderPurchaseService {
         purchaseRepository.findById(orderPurchaseDto.getPurchaseId())
                 .orElseThrow(() -> new EntityNotFoundException("Сущность выкупа не найдена"));
         User user = userService.findByEmail(userName);
-        UserPurchase userPurchase = userPurchaseRepository.findById_UserIdAndId_PurchaseId(user.getId(), orderPurchaseDto.getPurchaseId())
-                .orElse(new UserPurchase(user.getId(), orderPurchaseDto.getPurchaseId()));
+        UserPurchase userPurchase = userPurchaseDbService.findByUserIdAndPurchaseId(user.getId(), orderPurchaseDto.getPurchaseId());
         userPurchase.setDateCreated(Instant.now());
         int countOfPurchase = 0;
         if (userPurchase.getProductsCount() != null) {
             countOfPurchase += userPurchase.getProductsCount();
         }
         userPurchase.setProductsCount(orderPurchaseDto.getCountOfProducts() + countOfPurchase);
-        UserPurchase db = userPurchaseRepository.save(userPurchase);
+        UserPurchase db = userPurchaseDbService.create(userPurchase);
         purchaseCountService.countPurchasedProducts(db);
         return userPurchaseMapper.toDto(db);
     }
@@ -47,8 +46,7 @@ public class OrderPurchaseService {
     public OrderPurchaseDto getOrderPurchase(Integer purchaseId) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(userName);
-        return userPurchaseMapper.toDto(userPurchaseRepository.findById_UserIdAndId_PurchaseId(user.getId(), purchaseId)
-                .orElseThrow(() -> new EntityNotFoundException("Сущность выкупа не найдена")));
+        return userPurchaseMapper.toDto(userPurchaseDbService.findByUserIdAndPurchaseId(user.getId(), purchaseId));
     }
 
     public void deleteOrderPurchase(Integer purchaseId) {
@@ -56,9 +54,8 @@ public class OrderPurchaseService {
                 .orElseThrow(() -> new EntityNotFoundException("Сущность выкупа не найдена"));
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(userName);
-        UserPurchase userPurchase = userPurchaseRepository.findById_UserIdAndId_PurchaseId(user.getId(), purchaseId)
-                .orElseThrow(() -> new EntityNotFoundException("Сущность выкупа пользователя не найдена"));
-        userPurchaseRepository.delete(userPurchase);
+        UserPurchase userPurchase = userPurchaseDbService.findByUserIdAndPurchaseId(user.getId(), purchaseId);
+        userPurchaseDbService.delete(userPurchase);
         purchase.setCurCount(purchase.getCurCount() - userPurchase.getProductsCount());
         purchaseRepository.save(purchase);
     }
@@ -66,6 +63,6 @@ public class OrderPurchaseService {
     public Page<UserPurchase> getPagedOrderPurchase(int page, int pageSize) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByEmail(userName);
-        return userPurchaseRepository.findAllById_UserId(user.getId(), PageRequest.of(page, pageSize));
+        return userPurchaseDbService.findAllByUserId(user.getId(), PageRequest.of(page, pageSize));
     }
 }

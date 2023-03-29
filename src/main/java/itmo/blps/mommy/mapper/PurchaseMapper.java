@@ -5,22 +5,18 @@ import itmo.blps.mommy.dto.PurchaseResponseDTO;
 import itmo.blps.mommy.entity.Product;
 import itmo.blps.mommy.entity.Purchase;
 import itmo.blps.mommy.entity.PurchaseStatus;
-import itmo.blps.mommy.exception.EntityNotFoundException;
-import itmo.blps.mommy.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import itmo.blps.mommy.service.database.ProductDbService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class PurchaseMapper {
-
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
+    private ProductDbService productDbService;
     private ProductMapper productMapper;
 
     public Purchase fromDto(PurchaseRequestDTO purchaseRequestDTO) {
-        Product product = productService.findProduct(purchaseRequestDTO.getProductId());
+        Product product = productDbService.findProduct(purchaseRequestDTO.getProductId());
         return new Purchase(
                 purchaseRequestDTO.getMinCount(),
                 0,
