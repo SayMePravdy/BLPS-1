@@ -32,4 +32,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Integer> {
     int deletePurchase(@Param("id") int id);
 
     Optional<Purchase> findById(Integer id);
+
+    @Query(value = "select id from purchases where is_deleted = true limit :limit", nativeQuery = true)
+    List<Integer> getDeleted(@Param("limit") int limit);
 }
